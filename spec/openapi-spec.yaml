@@ -43,6 +43,10 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Release'
       operationId: get-release-id
       description: Fetch a release by ID.
 components:
