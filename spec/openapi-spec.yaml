@@ -1,0 +1,78 @@
+openapi: 3.0.0
+x-stoplight:
+  id: lvz3welklfcai
+info:
+  title: ReVanced API
+  version: '1.0'
+  description: |-
+    The official ReVanced API, for public use.
+
+    For more information, check our [GitHub organization](https://github.com/revanced) or join our [Discord server](https://revanced.app/discord)!
+  license:
+    url: 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+    name: GPL-3.0
+servers:
+  - url: 'https://api.revanced.app'
+    description: prod
+  - url: 'http://localhost:8080'
+    description: local
+paths:
+  /releases:
+    get:
+      summary: Get Releases
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: An array of release IDs.
+                items:
+                  $ref: '#/components/schemas/PartialRelease'
+              examples: {}
+      operationId: get-releases
+      description: Fetch all release IDs.
+  '/release/{releaseId}':
+    parameters:
+      - $ref: '#/components/parameters/releaseId'
+    get:
+      summary: Get Release by ID
+      tags: []
+      responses:
+        '200':
+          description: OK
+      operationId: get-release-id
+      description: Fetch a release by ID.
+components:
+  schemas:
+    Release:
+      title: Release
+      x-stoplight:
+        id: ldvv7wbp846cy
+      allOf:
+        - properties:
+            id:
+              $ref: '#/components/schemas/PartialRelease'
+          required:
+            - id
+        - properties:
+            url:
+              type: string
+              description: Download URL of the release.
+      type: object
+    PartialRelease:
+      title: PartialRelease
+      x-stoplight:
+        id: ubu6ubknn8lpy
+      type: string
+      description: ID of the release.
+  parameters:
+    releaseId:
+      name: releaseId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the release.
