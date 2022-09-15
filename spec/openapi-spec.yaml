@@ -43,7 +43,7 @@ paths:
               minItems: 1
               uniqueItems: true
               items:
-                $ref: '#/components/schemas/PartialRelease'
+                $ref: '#/components/schemas/Identifier'
     options:
       summary: Get Release IDs
       operationId: get-release-ids
@@ -57,12 +57,58 @@ paths:
                 description: An array of zero or more release IDs.
                 uniqueItems: true
                 items:
-                  $ref: '#/components/schemas/PartialRelease'
+                  $ref: '#/components/schemas/Identifier'
       description: |-
         Fetch all release IDs.
 
         The returned IDs may differ per implementation and installation.
         Do not assume an ID exists, because it may very well not.
+  /contributors:
+    parameters: []
+    get:
+      summary: Get Contributors by Repository
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: An array of zero or more contributor lists.
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContributorList'
+      operationId: get-contributors-by-repo
+      description: Fetch one or more releases by their IDs.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              description: An array of one or more repositories.
+              minItems: 1
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/Identifier'
+    options:
+      summary: Get Repositories
+      operationId: get-repositories
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: An array of zero or more repositories.
+                uniqueItems: true
+                items:
+                  $ref: '#/components/schemas/Identifier'
+      description: |-
+        Fetch all repositories.
+
+        The returned repositories may differ per implementation and installation.
+        Do not assume a repository exists, because it may very well not.
 components:
   schemas:
     Release:
@@ -72,7 +118,7 @@ components:
       allOf:
         - properties:
             id:
-              $ref: '#/components/schemas/PartialRelease'
+              $ref: '#/components/schemas/Identifier'
           required:
             - id
         - properties:
@@ -80,10 +126,51 @@ components:
               type: string
               description: Download URL of the release.
       type: object
-    PartialRelease:
-      title: PartialRelease
+    Identifier:
+      title: Identifier
       x-stoplight:
         id: ubu6ubknn8lpy
       type: string
-      description: ID of the release.
+      description: An identifier.
+    ContributorList:
+      title: ContributorList
+      x-stoplight:
+        id: kla64w9suirvc
+      type: object
+      properties:
+        repo:
+          type: string
+        contributors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contributor'
+      description: ''
+    Contributor:
+      type: object
+      x-examples:
+        example-1:
+          login: ponces
+          id: '4687488'
+          avatar_url: 'https://avatars.githubusercontent.com/u/4687488?v=4'
+          html_url: 'https://github.com/ponces'
+          contributions: 172
+      properties:
+        login:
+          type: string
+        id:
+          type: string
+        avatar_url:
+          type: string
+        html_url:
+          type: string
+        contributions:
+          type: integer
+      required:
+        - login
+        - id
+        - avatar_url
+        - html_url
+        - contributions
+      title: Contributor
+      description: 'Click [here](https://docs.github.com/en/rest/repos/repos#list-repository-contributors) for more information.'
   parameters: {}
