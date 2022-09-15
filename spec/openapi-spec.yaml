@@ -24,10 +24,11 @@ paths:
     parameters:
       - schema:
           type: string
-          example: 77263859;77219737;77214591
+          example: 77263859;77219737;77214591;
+          pattern: ^(\d+;)+$
         name: ids
         in: path
-        description: 'An array of release IDs, delimited by '';''. If this parameter is not specified, all releases will be returned (max 15).'
+        description: 'An array of release IDs, delimited by '';'' and must end with a '';''. If this parameter is not specified, all releases will be returned (max 15).'
     get:
       summary: Get Releases by their IDs
       tags: []
@@ -71,10 +72,11 @@ paths:
     parameters:
       - schema:
           type: string
-          example: revanced/revanced-manager;revanced/revanced-patches;revanced/revanced-patches
+          example: revanced/revanced-manager;revanced/revanced-patcher;revanced/revanced-patches;
+          pattern: '^([A-z-_]+\/[A-z-_]+;)+$'
         name: ids
         in: path
-        description: 'An array of repositories, delimited by '';''. If this parameter is not specified, contributors of all repositories will be returned (max 15).'
+        description: 'An array of repositories, delimited by '';'' and must end with a '';''. If this parameter is not specified, contributors of all repositories will be returned (max 15).'
     get:
       summary: Get Contributors by Repository
       tags: []
