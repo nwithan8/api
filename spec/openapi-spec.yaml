@@ -11,6 +11,9 @@ info:
   license:
     url: 'https://www.gnu.org/licenses/gpl-3.0.en.html'
     name: GPL-3.0
+  contact:
+    name: ReVanced
+    url: 'https://revanced.app'
 servers:
   - url: 'https://api.revanced.app'
     description: prod
