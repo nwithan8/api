@@ -33,6 +33,8 @@ paths:
               schema:
                 type: array
                 description: An array of zero or more releases.
+                minItems: 0
+                uniqueItems: true
                 items:
                   $ref: '#/components/schemas/Release'
       operationId: get-releases-by-ids
@@ -59,6 +61,7 @@ paths:
                 type: array
                 description: An array of zero or more release IDs.
                 uniqueItems: true
+                minItems: 0
                 items:
                   $ref: '#/components/schemas/Identifier'
       description: |-
@@ -77,8 +80,10 @@ paths:
           content:
             application/json:
               schema:
-                description: An array of zero or more contributor lists.
                 type: array
+                description: An array of zero or more contributor lists.
+                minItems: 0
+                uniqueItems: true
                 items:
                   $ref: '#/components/schemas/ContributorList'
       operationId: get-contributors-by-repo
@@ -105,6 +110,7 @@ paths:
                 type: array
                 description: An array of zero or more repositories.
                 uniqueItems: true
+                minItems: 0
                 items:
                   $ref: '#/components/schemas/Identifier'
       description: |-
