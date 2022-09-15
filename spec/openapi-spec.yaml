@@ -17,9 +17,10 @@ servers:
   - url: 'http://localhost:8080'
     description: local
 paths:
-  /releases:
+  /release:
+    parameters: []
     get:
-      summary: Get Releases
+      summary: Get Releases by their IDs
       tags: []
       responses:
         '200':
@@ -28,27 +29,40 @@ paths:
             application/json:
               schema:
                 type: array
-                description: An array of release IDs.
+                description: An array of zero or more releases.
                 items:
-                  $ref: '#/components/schemas/PartialRelease'
-              examples: {}
-      operationId: get-releases
-      description: Fetch all release IDs.
-  '/release/{releaseId}':
-    parameters:
-      - $ref: '#/components/parameters/releaseId'
-    get:
-      summary: Get Release by ID
-      tags: []
+                  $ref: '#/components/schemas/Release'
+      operationId: get-releases-by-ids
+      description: Fetch one or more releases by their IDs.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              description: An array of one or more release IDs.
+              minItems: 1
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/PartialRelease'
+    options:
+      summary: Get Release IDs
+      operationId: get-release-ids
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Release'
-      operationId: get-release-id
-      description: Fetch a release by ID.
+                type: array
+                description: An array of zero or more release IDs.
+                uniqueItems: true
+                items:
+                  $ref: '#/components/schemas/PartialRelease'
+      description: |-
+        Fetch all release IDs.
+
+        The returned IDs may differ per implementation and installation.
+        Do not assume an ID exists, because it may very well not.
 components:
   schemas:
     Release:
@@ -72,11 +86,4 @@ components:
         id: ubu6ubknn8lpy
       type: string
       description: ID of the release.
-  parameters:
-    releaseId:
-      name: releaseId
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The ID of the release.
+  parameters: {}
