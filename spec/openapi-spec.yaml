@@ -134,52 +134,59 @@ components:
             url:
               type: string
               description: Download URL of the release.
+              example: 'https://github.com/revanced/revanced-manager/releases/download/v0.0.6/revanced-manager-v0.0.6.apk'
+          required:
+            - url
       type: object
     Identifier:
+      type: string
       title: Identifier
       x-stoplight:
         id: ubu6ubknn8lpy
-      type: string
       description: An identifier.
+      example: revanced-manager
     ContributorList:
       title: ContributorList
       x-stoplight:
         id: kla64w9suirvc
       type: object
+      description: ''
       properties:
         repo:
           type: string
+          example: revanced/revanced-manager
         contributors:
           type: array
           items:
             $ref: '#/components/schemas/Contributor'
-      description: ''
+      required:
+        - repo
+        - contributors
     Contributor:
       type: object
-      x-examples:
-        example-1:
-          login: ponces
-          id: '4687488'
-          avatar_url: 'https://avatars.githubusercontent.com/u/4687488?v=4'
-          html_url: 'https://github.com/ponces'
-          contributions: 172
+      x-examples: {}
+      title: Contributor
+      description: 'Click [here](https://docs.github.com/en/rest/repos/repos#list-repository-contributors) for more information.'
       properties:
         login:
           type: string
+          example: Sculas
         id:
           type: string
+          example: '22832313'
         avatar_url:
           type: string
+          example: 'https://avatars.githubusercontent.com/u/22832313?v=4'
         html_url:
           type: string
+          example: 'https://github.com/Sculas'
         contributions:
           type: integer
+          example: 9
       required:
         - login
         - id
         - avatar_url
         - html_url
         - contributions
-      title: Contributor
-      description: 'Click [here](https://docs.github.com/en/rest/repos/repos#list-repository-contributors) for more information.'
   parameters: {}
