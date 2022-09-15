@@ -20,8 +20,14 @@ servers:
   - url: 'http://localhost:8080'
     description: local
 paths:
-  /release:
-    parameters: []
+  '/release/{ids}':
+    parameters:
+      - schema:
+          type: string
+          example: 77263859;77219737;77214591
+        name: ids
+        in: path
+        description: 'An array of release IDs, delimited by '';''. If this parameter is not specified, all releases will be returned (max 15).'
     get:
       summary: Get Releases by their IDs
       tags: []
@@ -39,17 +45,9 @@ paths:
                   $ref: '#/components/schemas/Release'
       operationId: get-releases-by-ids
       description: Fetch one or more releases by their IDs.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              description: An array of one or more release IDs.
-              minItems: 1
-              uniqueItems: true
-              items:
-                $ref: '#/components/schemas/ReleaseId'
-    options:
+  /release:
+    parameters: []
+    get:
       summary: Get Release IDs
       operationId: get-release-ids
       responses:
@@ -69,8 +67,14 @@ paths:
 
         The returned IDs may differ per implementation and installation.
         Do not assume an ID exists, because it may very well not.
-  /contributors:
-    parameters: []
+  '/contributors/{ids}':
+    parameters:
+      - schema:
+          type: string
+          example: revanced/revanced-manager;revanced/revanced-patches;revanced/revanced-patches
+        name: ids
+        in: path
+        description: 'An array of repositories, delimited by '';''. If this parameter is not specified, contributors of all repositories will be returned (max 15).'
     get:
       summary: Get Contributors by Repository
       tags: []
@@ -88,17 +92,9 @@ paths:
                   $ref: '#/components/schemas/ContributorList'
       operationId: get-contributors-by-repo
       description: Fetch one or more releases by their IDs.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              description: An array of one or more repositories.
-              minItems: 1
-              uniqueItems: true
-              items:
-                $ref: '#/components/schemas/Repository'
-    options:
+  /contributors:
+    parameters: []
+    get:
       summary: Get Repositories
       operationId: get-repositories
       responses:
@@ -133,6 +129,10 @@ components:
           description: The Download URL of this release.
           format: uri
           example: 'https://github.com/revanced/revanced-manager/releases/download/v0.0.6/revanced-manager-v0.0.6.apk'
+        name:
+          type: string
+          description: The name of this release.
+          example: revanced-manager-v0.0.6.apk
         repo:
           type: string
           description: Repository where this release resides in.
@@ -146,23 +146,24 @@ components:
           description: The timestamp when this release was created at.
           format: date-time
         size:
-          type: string
-          description: 'The binary size of this release, serialized as a string.'
+          type: integer
+          description: The binary size of this release.
           example: '41921144'
       required:
         - id
         - url
+        - name
         - repo
         - ver
         - ts
         - size
     ReleaseId:
+      type: integer
       title: ReleaseId
       x-stoplight:
         id: ltppuk9j1ry47
-      type: string
       description: The ID of this release.
-      example: revanced-manager-v0.0.6.apk
+      example: '77939122'
     Repository:
       type: string
       title: Repository
