@@ -48,7 +48,7 @@ paths:
               minItems: 1
               uniqueItems: true
               items:
-                $ref: '#/components/schemas/Identifier'
+                $ref: '#/components/schemas/ReleaseId'
     options:
       summary: Get Release IDs
       operationId: get-release-ids
@@ -63,7 +63,7 @@ paths:
                 uniqueItems: true
                 minItems: 0
                 items:
-                  $ref: '#/components/schemas/Identifier'
+                  $ref: '#/components/schemas/ReleaseId'
       description: |-
         Fetch all release IDs.
 
@@ -97,7 +97,7 @@ paths:
               minItems: 1
               uniqueItems: true
               items:
-                $ref: '#/components/schemas/Identifier'
+                $ref: '#/components/schemas/Repository'
     options:
       summary: Get Repositories
       operationId: get-repositories
@@ -112,7 +112,7 @@ paths:
                 uniqueItems: true
                 minItems: 0
                 items:
-                  $ref: '#/components/schemas/Identifier'
+                  $ref: '#/components/schemas/Repository'
       description: |-
         Fetch all repositories.
 
@@ -124,27 +124,52 @@ components:
       title: Release
       x-stoplight:
         id: ldvv7wbp846cy
-      allOf:
-        - properties:
-            id:
-              $ref: '#/components/schemas/Identifier'
-          required:
-            - id
-        - properties:
-            url:
-              type: string
-              description: Download URL of the release.
-              example: 'https://github.com/revanced/revanced-manager/releases/download/v0.0.6/revanced-manager-v0.0.6.apk'
-          required:
-            - url
       type: object
-    Identifier:
-      type: string
-      title: Identifier
+      properties:
+        id:
+          $ref: '#/components/schemas/ReleaseId'
+        url:
+          type: string
+          description: The Download URL of this release.
+          format: uri
+          example: 'https://github.com/revanced/revanced-manager/releases/download/v0.0.6/revanced-manager-v0.0.6.apk'
+        repo:
+          type: string
+          description: Repository where this release resides in.
+          example: revanced/revanced-manager
+        ver:
+          type: string
+          description: The version or tag of this release.
+          example: v0.0.6
+        ts:
+          type: string
+          description: The timestamp when this release was created at.
+          format: date-time
+        size:
+          type: string
+          description: 'The binary size of this release, serialized as a string.'
+          example: '41921144'
+      required:
+        - id
+        - url
+        - repo
+        - ver
+        - ts
+        - size
+    ReleaseId:
+      title: ReleaseId
       x-stoplight:
-        id: ubu6ubknn8lpy
-      description: An identifier.
-      example: revanced-manager
+        id: ltppuk9j1ry47
+      type: string
+      description: The ID of this release.
+      example: revanced-manager-v0.0.6.apk
+    Repository:
+      type: string
+      title: Repository
+      x-stoplight:
+        id: ltppuk9j1ry47
+      description: A repository identifier.
+      example: revanced/revanced-manager
     ContributorList:
       title: ContributorList
       x-stoplight:
@@ -153,10 +178,12 @@ components:
       description: ''
       properties:
         repo:
-          type: string
-          example: revanced/revanced-manager
+          $ref: '#/components/schemas/Repository'
         contributors:
           type: array
+          uniqueItems: true
+          minItems: 1
+          description: An array of one or more contributors.
           items:
             $ref: '#/components/schemas/Contributor'
       required:
@@ -168,25 +195,26 @@ components:
       title: Contributor
       description: 'Click [here](https://docs.github.com/en/rest/repos/repos#list-repository-contributors) for more information.'
       properties:
-        login:
+        name:
           type: string
           example: Sculas
-        id:
-          type: string
-          example: '22832313'
-        avatar_url:
+          description: The username of this user.
+        avatar:
           type: string
           example: 'https://avatars.githubusercontent.com/u/22832313?v=4'
-        html_url:
+          description: The avatar URL for this user.
+          format: uri
+        url:
           type: string
           example: 'https://github.com/Sculas'
+          description: The profile URL for this user.
         contributions:
           type: integer
           example: 9
+          description: The amount of contributions this user has.
       required:
-        - login
-        - id
-        - avatar_url
-        - html_url
+        - name
+        - avatar
+        - url
         - contributions
   parameters: {}
